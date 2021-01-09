@@ -22,7 +22,7 @@ class MainWindow(QWidget):
         self.width = 500
         self.height = 500
         self.title = 'Pomodoro'
-        self.background = QPixmap('background.png')
+        self.background = QPixmap('pomodo_bkg_02.png')
         if self.background:
             self.width = self.background.width()
             self.height = self.background.height()
@@ -32,10 +32,10 @@ class MainWindow(QWidget):
         self.setAttribute(Qt.WA_TranslucentBackground)
 
         # init window assets
-        self.stop_button = SimpleButton.EllipseButton(50, 50)
-        self.stop_button.move(150,300)
-        self.start_button = SimpleButton.RectButton(50, 50)
-        self.start_button.move(350,300)
+        self.stop_button = SimpleButton.RectButton(48, 48)
+        self.stop_button.move(176,240)
+        self.start_button = SimpleButton.RectButton(48, 48)
+        self.start_button.move(336,240)
 
         # timer
         self.pom_timer = PomodoTimer.PomodoTimer()
@@ -85,9 +85,10 @@ class MainWindow(QWidget):
         painter.setRenderHint(painter.Antialiasing)
         painter.drawPixmap(0, 0, self.background)
         # draw buttons
-        painter.setBrush(QColor(200,50,50))
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(QColor(118,22,22))
         self.stop_button.draw(painter)
-        painter.setBrush(QColor(200,150,50))
+        painter.setBrush(QColor(118,33,33))
         self.start_button.draw(painter)
         return super().paintEvent(a0)
 

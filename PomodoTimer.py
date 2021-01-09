@@ -15,7 +15,7 @@ class PomodoTimer():
         self.paused = True
         self.elapsed_time = 0
         self.last_update = 0
-        self.states = [{'STOPPED':0}, {'RUN1':4}, {'BREAK1':2}, {'RUN2':4}, {'BREAK2':2}, {'LONGBREAK':4}]
+        self.states = [{'STOPPED':0}, {'RUN1':15}, {'BREAK1':5}, {'RUN2':15}, {'BREAK2':5}, {'RUN3':15}, {'LONGBREAK':25}]
         self.state = self.states[0]
 
     def pause(self):
@@ -43,8 +43,7 @@ class PomodoTimer():
         else:
             self.last_update = time.time()
 
-        #if self.elapsed_time >= self.minToSec(list(self.state.values())[0]):
-        if self.elapsed_time >= list(self.state.values())[0]:
+        if self.elapsed_time >= self.minToSec(list(self.state.values())[0]):
             index = self.states.index(self.state)
             if index + 1 >= len(self.states):
                 self.state = self.states[1]

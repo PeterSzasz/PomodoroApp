@@ -16,8 +16,8 @@ class SimpleButton:
         pass
 
     def isInside(self, x: int, y: int):
-        if self.posX < x and x < (self.posX + self.width):
-            if self.posY < y and y < (self.posY + self.height):
+        if (self.posX - self.width/2) < x and x < (self.posX + self.width/2):
+            if (self.posY - self.height/2) < y and y < (self.posY + self.height/2):
                 return True
         return False
         
