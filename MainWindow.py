@@ -2,7 +2,7 @@
 
 import sys
 
-from PyQt5.QtCore import QCoreApplication, QPoint, QTimer, Qt
+from PyQt5.QtCore import QCoreApplication, QTimer, Qt
 from PyQt5.QtGui import QPainter, QPixmap, QColor
 from PyQt5.QtGui import QMouseEvent, QPaintEvent
 from PyQt5.QtWidgets import QAction
@@ -22,7 +22,7 @@ class MainWindow(QWidget):
         self.width = 500
         self.height = 500
         self.title = 'Pomodoro'
-        self.background = QPixmap('pomodo_bkg_02.png')
+        self.background = QPixmap('image/pomodo_bkg_02.png')
         if self.background:
             self.width = self.background.width()
             self.height = self.background.height()
