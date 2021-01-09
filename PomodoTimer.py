@@ -1,6 +1,7 @@
 # time handling for pomodoro
 
 import time
+import simpleaudio
 
 class PomodoTimer():
 
@@ -18,8 +19,16 @@ class PomodoTimer():
         self.states = [{'STOPPED':0}, {'RUN1':15}, {'BREAK1':5}, {'RUN2':15}, {'BREAK2':5}, {'RUN3':15}, {'LONGBREAK':25}]
         self.state = self.states[0]
 
+        #audio objects
+        self.start_sound = simpleaudio.WaveObject.from_wave_file('sound/start.wav')
+        self.stop_sound = simpleaudio.WaveObject.from_wave_file('sound/stop.wav')
+        self.break_sound = simpleaudio.WaveObject.from_wave_file('sound/break.wav')
+        self.pause_sound = simpleaudio.WaveObject.from_wave_file('sound/pause.wav')
+
     def pause(self):
         self.paused = not self.paused
+        play_obj = self.pause_sound.play()
+        play_obj.wait_done()
 
     def start(self, state = None):
         self.last_update = time.time()
@@ -28,11 +37,15 @@ class PomodoTimer():
             self.state = self.states[1]
         else:
             self.state = state
+        play_obj = self.start_sound.play()
+        play_obj.wait_done()
 
     def stop(self):
         self.state = self.states[0]
         self.elapsed_time = 0
         self.paused = True
+        play_obj = self.stop_sound.play()
+        play_obj.wait_done()
 
     def update(self):
         print(self.elapsed_time)
@@ -50,7 +63,10 @@ class PomodoTimer():
             else:
                 self.state = self.states[index + 1]
             self.elapsed_time = 0
+            play_obj = self.break_sound.play()
+            play_obj.wait_done()
             print("next state: " + str(self.state))
+
 
 if __name__ == "__main__":
     pt = PomodoTimer()
