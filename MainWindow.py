@@ -1,0 +1,103 @@
+"""Simple pomodoro window with PyQt5."""
+
+import sys
+
+from PyQt5.QtCore import QCoreApplication, QPoint, QTimer, Qt
+from PyQt5.QtGui import QPainter, QPixmap, QColor
+from PyQt5.QtGui import QMouseEvent, QPaintEvent
+from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QApplication
+
+import SimpleButton
+import PomodoTimer
+
+class MainWindow(QWidget):
+    
+    def __init__(self):
+        super().__init__(None, Qt.FramelessWindowHint | Qt.WindowSystemMenuHint)
+        self.dragPosition = None
+        self.posx = 700
+        self.posy = 500
+        self.width = 500
+        self.height = 500
+        self.title = 'Pomodoro'
+        self.background = QPixmap('background.png')
+        if self.background:
+            self.width = self.background.width()
+            self.height = self.background.height()
+
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.posx, self.posy, self.width, self.height)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+
+        # init window assets
+        self.stop_button = SimpleButton.EllipseButton(50, 50)
+        self.stop_button.move(150,300)
+        self.start_button = SimpleButton.RectButton(50, 50)
+        self.start_button.move(350,300)
+
+        # timer
+        self.pom_timer = PomodoTimer.PomodoTimer()
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update)
+        self.timer.start(500)
+
+        # add quit to keyboard shortcut
+        quitAction = QAction(self.tr("E&xit"), self)
+        quitAction.setShortcut(self.tr("Ctrl+Q"))
+        quitAction.triggered.connect(QCoreApplication.quit)
+        self.addAction(quitAction)
+
+        # add start/stop timer to keyboard shortcut
+        startstopAction = QAction(self.tr("S&tart/S&top"), self)
+        startstopAction.setShortcut(self.tr("Space"))
+        startstopAction.triggered.connect(self.pom_timer.pause)
+        self.addAction(startstopAction)
+
+        self.setToolTip("Ctrl-Q for Quit.\nMove tomato with left mouse button.")
+
+    def mousePressEvent(self, a0: QMouseEvent) -> None:
+        if a0.button() == Qt.LeftButton:
+            self.dragPosition = a0.globalPos() - self.frameGeometry().topLeft()
+            print(a0.localPos())
+
+            if self.stop_button.isInside(a0.localPos().x(), a0.localPos().y()):
+                print("Stop.")
+                self.pom_timer.stop()
+                print(self.pom_timer.state)
+            if self.start_button.isInside(a0.localPos().x(), a0.localPos().y()):
+                print("Start.")
+                self.pom_timer.start()
+                print(self.pom_timer.state)
+            a0.accept()
+        return super().mousePressEvent(a0)
+
+    def mouseMoveEvent(self, a0: QMouseEvent) -> None:
+        if a0.buttons() & Qt.LeftButton and self.dragPosition:
+            self.move(a0.globalPos() - self.dragPosition)
+            a0.accept()
+        return super().mouseMoveEvent(a0)
+
+    def paintEvent(self, a0: QPaintEvent) -> None:
+        # start painting with background image
+        painter = QPainter(self)
+        painter.setRenderHint(painter.Antialiasing)
+        painter.drawPixmap(0, 0, self.background)
+        # draw buttons
+        painter.setBrush(QColor(200,50,50))
+        self.stop_button.draw(painter)
+        painter.setBrush(QColor(200,150,50))
+        self.start_button.draw(painter)
+        return super().paintEvent(a0)
+
+    def update(self):
+        super().update()
+        self.pom_timer.update()
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    mw = MainWindow()
+    mw.show()
+    sys.exit(app.exec_())
