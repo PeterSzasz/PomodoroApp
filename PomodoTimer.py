@@ -16,7 +16,14 @@ class PomodoTimer():
         self.paused = True
         self.elapsed_time = 0
         self.last_update = 0
-        self.states = [{'STOPPED':0}, {'RUN1':15}, {'BREAK1':5}, {'RUN2':15}, {'BREAK2':5}, {'RUN3':15}, {'LONGBREAK':25}]
+        self.states = [ {'STOPPED':9999},
+                        {'RUN1':15},
+                        {'BREAK1':5},
+                        {'RUN2':15},
+                        {'BREAK2':5},
+                        {'RUN3':15},
+                        {'LONGBREAK':25}
+                      ]
         self.state = self.states[0]
 
         #audio objects
