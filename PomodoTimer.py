@@ -17,7 +17,7 @@ class PomodoTimer():
         self.elapsed_time = 0
         self.last_update = 0
         self.states = [ {'STOPPED':9999},
-                        {'RUN1':1},
+                        {'RUN1':15},
                         {'BREAK1':5},
                         {'RUN2':15},
                         {'BREAK2':5},
