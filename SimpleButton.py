@@ -1,6 +1,7 @@
-# simple ellipse or rectangle for buttons
+# simple clickable buttons, sliders, etc
 
-class SimpleButton:
+
+class CollisionRect:
 
     def __init__(self, width=30, height=30):
         self.posX = 200
@@ -22,7 +23,7 @@ class SimpleButton:
         return False
         
 
-class RectButton(SimpleButton):
+class RectButton(CollisionRect):
 
     def __init__(self, width, height):
         super().__init__(width, height)
@@ -34,7 +35,7 @@ class RectButton(SimpleButton):
         painter.restore()
 
 
-class EllipseButton(SimpleButton):
+class EllipseButton(CollisionRect):
 
     def __init__(self, width, height):
         super().__init__(width, height)
@@ -43,4 +44,29 @@ class EllipseButton(SimpleButton):
         painter.save()
         painter.translate(self.posX - self.width/2, self.posY - self.height/2)
         painter.drawEllipse(0, 0, self.width, self.height)
+        painter.restore()
+
+class PassiveSlider(CollisionRect):
+
+    def __init__(self, width=150, height=30):
+        self.position = 0
+        self.max = width
+        super().__init__(width=width, height=height)
+
+    def setPosition(self, pos):
+        '''pos: int  a 0.0->1.0 value for the slider position'''
+        self.position = int(pos * self.max)
+
+    def draw(self, painter):
+        gap = 1 # tooths' gap
+        tooth_w = 10
+        painter.save()
+        painter.translate(self.posX - self.width/2, self.posY - self.height/2)
+        painter.drawLine(0, self.height/2, self.width, self.height/2)
+        painter.drawRect(0 + self.position - gap - tooth_w, 0 + self.height/2,
+                         tooth_w, self.height
+                         )
+        painter.drawRect(0 + self.position + gap, 0 + self.height/2,
+                         tooth_w, self.height
+                         )
         painter.restore()

@@ -36,6 +36,8 @@ class MainWindow(QWidget):
         self.stop_button.move(176,240)
         self.start_button = SimpleButton.RectButton(48, 48)
         self.start_button.move(336,240)
+        self.time_slider = SimpleButton.PassiveSlider()
+        self.time_slider.move(256,370)
 
         # timer
         self.pom_timer = PomodoTimer.PomodoTimer()
@@ -61,10 +63,13 @@ class MainWindow(QWidget):
         if a0.button() == Qt.LeftButton:
             self.dragPosition = a0.globalPos() - self.frameGeometry().topLeft()
             print(a0.localPos())
-
+            if self.time_slider.isInside(a0.localPos().x(), a0.localPos().y()):
+                print("paused")
+                self.pom_timer.pause()
             if self.stop_button.isInside(a0.localPos().x(), a0.localPos().y()):
                 print("Stop.")
                 self.pom_timer.stop()
+                self.time_slider.setPosition(0.0)
                 print(self.pom_timer.state)
             if self.start_button.isInside(a0.localPos().x(), a0.localPos().y()):
                 print("Start.")
@@ -85,16 +90,19 @@ class MainWindow(QWidget):
         painter.setRenderHint(painter.Antialiasing)
         painter.drawPixmap(0, 0, self.background)
         # draw buttons
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.SolidLine)
         painter.setBrush(QColor(118,22,22))
         self.stop_button.draw(painter)
         painter.setBrush(QColor(118,33,33))
         self.start_button.draw(painter)
+        painter.setBrush(QColor(210,200,200))
+        self.time_slider.draw(painter)
         return super().paintEvent(a0)
 
     def update(self):
         super().update()
         self.pom_timer.update()
+        self.time_slider.setPosition(self.pom_timer.getNormalizedElapsed())
 
 
 if __name__ == "__main__":
