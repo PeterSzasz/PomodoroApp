@@ -102,7 +102,7 @@ class MainWindow(QWidget):
     def update(self):
         super().update()
         self.pom_timer.update()
-        self.time_slider.setPosition(self.pom_timer.getNormalizedElapsed())
+        self.time_slider.setTimes(self.pom_timer.getElapsedTime(), self.pom_timer.getEndTime())
 
 
 if __name__ == "__main__":

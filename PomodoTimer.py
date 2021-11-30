@@ -16,7 +16,7 @@ class PomodoTimer():
         self.paused = True
         self.elapsed_time = 0
         self.last_update = 0
-        self.states = [ {'STOPPED':9999},
+        self.states = [ {'STOPPED':99.99},
                         {'RUN1':15},
                         {'BREAK1':5},
                         {'RUN2':15},
@@ -31,6 +31,12 @@ class PomodoTimer():
         self.stop_sound = simpleaudio.WaveObject.from_wave_file('sound/stop.wav')
         self.break_sound = simpleaudio.WaveObject.from_wave_file('sound/break.wav')
         self.pause_sound = simpleaudio.WaveObject.from_wave_file('sound/pause.wav')
+
+    def getElapsedTime(self):
+        return self.elapsed_time
+
+    def getEndTime(self):
+        return self.minToSec(list(self.state.values())[0])
 
     def pause(self):
         self.paused = not self.paused
