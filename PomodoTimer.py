@@ -40,12 +40,10 @@ class PomodoTimer():
 
     def pause(self):
         self.paused = not self.paused
-        play_obj = self.pause_sound.play()
-        play_obj.wait_done()
+        self.pause_sound.play()
 
     def start(self, state = None):
-        play_obj = self.start_sound.play()
-        play_obj.wait_done()
+        self.start_sound.play()
         self.last_update = time.time()
         self.paused = False
         if not state:
@@ -57,8 +55,7 @@ class PomodoTimer():
         self.state = self.states[0]
         self.elapsed_time = 0
         self.paused = True
-        play_obj = self.stop_sound.play()
-        play_obj.wait_done()
+        self.stop_sound.play()
 
     def getNormalizedElapsed(self):
         '''elapsed time on a 0.0 to 1.0 scale'''
@@ -80,9 +77,7 @@ class PomodoTimer():
             else:
                 self.state = self.states[index + 1]
             self.elapsed_time = 0
-            play_obj = self.break_sound.play()
-            play_obj.wait_done()
-            print("next state: " + str(self.state))
+            self.break_sound.play()
 
 
 if __name__ == "__main__":
