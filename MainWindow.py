@@ -1,6 +1,9 @@
 """Simple pomodoro window with PyQt5."""
 
 import sys
+from os import chdir
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    chdir(sys._MEIPASS)
 
 from PyQt5.QtCore import QCoreApplication, QTimer, Qt
 from PyQt5.QtGui import QPainter, QPixmap, QColor
