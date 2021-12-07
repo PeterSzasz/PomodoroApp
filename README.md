@@ -11,5 +11,3 @@ A simple pomodoro app in PyQt5.15. Custom appearance. Classic rounds. Weird soun
 TODO:
 - config menu and config file
 - maybe cli parameters
-- even simpler controls or we need a mini state-machine
-- sound handling should be in its separate class and thread
